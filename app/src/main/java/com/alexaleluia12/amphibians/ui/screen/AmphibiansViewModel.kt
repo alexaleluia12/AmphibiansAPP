@@ -40,15 +40,12 @@ class AmphibiansViewModel: ViewModel() {
         viewModelScope.launch {
             uiState = try {
                 val amphibians = amphibiansRepository.getAmphibians()
-                AmphibiansUiState.Success(
-                    amphibians.slice(0 .. 2)
-                )
+                AmphibiansUiState.Success(amphibians)
             } catch (e: IOException) {
                 Log.d(TAG, e.toString())
                 AmphibiansUiState.Error
             } catch (e: Exception) {
                 Log.d(TAG, e.toString())
-                Log.d(TAG, e.stackTraceToString())
                 AmphibiansUiState.Error
             }
 

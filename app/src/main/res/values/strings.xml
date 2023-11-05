@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Amphibians</string>
     <string name="card_amphibian_header">%s (%s)</string>
+    <string name="frog_description">Frog image</string>
 </resources>
