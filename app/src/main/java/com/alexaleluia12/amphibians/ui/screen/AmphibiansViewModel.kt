@@ -5,32 +5,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import com.alexaleluia12.amphibians.data.NetworkAmphibiansRepository
-import com.alexaleluia12.amphibians.network.AmphibiansApiService
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.alexaleluia12.amphibians.AmphibiansApplication
+import com.alexaleluia12.amphibians.data.AmphibiansRepository
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
 import java.io.IOException
 
 const val TAG = "AmphibiansViewModel"
-class AmphibiansViewModel: ViewModel() {
+
+class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository) : ViewModel() {
     var uiState: AmphibiansUiState by mutableStateOf(AmphibiansUiState.Loading)
         private set
-
-    private val url = "https://android-kotlin-fun-mars-server.appspot.com"
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-        .baseUrl(url)
-        .build()
-
-    // TODO passar dependecias como parametros
-    private val retrofitService: AmphibiansApiService by lazy {
-        retrofit.create(AmphibiansApiService::class.java)
-    }
-    private val amphibiansRepository = NetworkAmphibiansRepository(retrofitService)
 
     init {
         getAmphibians()
@@ -48,7 +37,18 @@ class AmphibiansViewModel: ViewModel() {
                 Log.d(TAG, e.toString())
                 AmphibiansUiState.Error
             }
+        }
+    }
 
+    // necessario um construtor separado
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as AmphibiansApplication)
+                // dependencia camada 2, dependencia de rempository foi definida emm AppContainer
+                val amphibiansRepository = application.container.amphibiansRepository
+                AmphibiansViewModel(amphibiansRepository)
+            }
         }
     }
 }

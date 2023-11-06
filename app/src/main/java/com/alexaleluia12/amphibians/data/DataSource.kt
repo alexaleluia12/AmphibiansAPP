@@ -15,4 +15,4 @@ val fakeAmphibians = listOf<Amphibian>(
         description = "This toad is typically found in South America. Specifically on Mount Roraima at the boarders of Venezuala, Brazil, and Guyana, hence the name. The Roraiam Bush Toad is typically black with yellow spots or marbling along the throat and belly.",
         imgSrc = "urh.fake2"
     ),
-    )
+)

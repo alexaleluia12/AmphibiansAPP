@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,32 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alexaleluia12.amphibians.R
 import com.alexaleluia12.amphibians.data.fakeAmphibians
 import com.alexaleluia12.amphibians.model.Amphibian
 import com.alexaleluia12.amphibians.ui.theme.AmphibiansTheme
-
-@Composable
-fun AmphibiansApp() {
-
-    Scaffold(
-        topBar = { AppBar() }
-    ) { contentPadding ->
-        Surface(
-            modifier = Modifier
-                .padding(contentPadding)
-                .fillMaxSize()
-        ) {
-            val viewModel: AmphibiansViewModel = viewModel()
-
-            AmphibiansList(uiState = viewModel.uiState, onRetry = viewModel::getAmphibians)
-        }
-    }
-
-}
 
 @Composable
 fun AmphibiansList(uiState: AmphibiansUiState, onRetry: () -> Unit) {
