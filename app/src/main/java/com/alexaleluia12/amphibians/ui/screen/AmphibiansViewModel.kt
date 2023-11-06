@@ -31,10 +31,10 @@ class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository
                 val amphibians = amphibiansRepository.getAmphibians()
                 AmphibiansUiState.Success(amphibians)
             } catch (e: IOException) {
-                Log.d(TAG, e.toString())
+                //Log.d(TAG, e.toString()) // TODO(quero logar erro sem ter conflito nos testes)
                 AmphibiansUiState.Error
             } catch (e: Exception) {
-                Log.d(TAG, e.toString())
+                //Log.d(TAG, e.toString())
                 AmphibiansUiState.Error
             }
         }
