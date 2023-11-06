@@ -1,7 +1,7 @@
 package com.alexaleluia12.amphibians.ui.screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,17 +11,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,21 +41,23 @@ fun AmphibiansApp() {
     Scaffold(
         topBar = { AppBar() }
     ) { contentPadding ->
-        Surface(modifier = Modifier
-            .padding(contentPadding)
-            .fillMaxSize()) {
+        Surface(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize()
+        ) {
             val viewModel: AmphibiansViewModel = viewModel()
 
-            AmphibiansList(uiState = viewModel.uiState)
+            AmphibiansList(uiState = viewModel.uiState, onRetry = viewModel::getAmphibians)
         }
     }
 
 }
 
 @Composable
-fun AmphibiansList(uiState: AmphibiansUiState) {
+fun AmphibiansList(uiState: AmphibiansUiState, onRetry: () -> Unit) {
     when (uiState) {
-        is AmphibiansUiState.Error -> ErrorScreen()
+        is AmphibiansUiState.Error -> ErrorScreen(onRetry)
         is AmphibiansUiState.Loading -> LoadingScreen()
         is AmphibiansUiState.Success -> AmphibiansScreen(uiState.amphibians)
     }
@@ -68,16 +70,35 @@ fun LoadingScreen() {
 }
 
 @Composable
-fun ErrorScreen() {
-    // TODO usar img de quebrada
-    Text("Erro ao buscar dados", style = MaterialTheme.typography.displayMedium)
+fun ErrorScreen(onRetry: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(0.9f).padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_broken_image),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.aspectRatio(1.5f)
+            )
+            Text(stringResource(R.string.error_msg), style = MaterialTheme.typography.displayMedium)
+            OutlinedButton(onClick = onRetry) {
+                Text(text = stringResource(R.string.reload))
+            }
+        }
+    }
+
 }
 
 @Composable
 fun AmphibiansScreen(amphibians: List<Amphibian>) {
     LazyColumn {
         items(items = amphibians, key = { item -> item.name }) {
-            AmphibianCard(amphibian = it, modifier = Modifier.padding(4.dp) )
+            AmphibianCard(amphibian = it, modifier = Modifier.padding(4.dp))
         }
     }
 }

@@ -2,4 +2,6 @@
     <string name="app_name">Amphibians</string>
     <string name="card_amphibian_header">%s (%s)</string>
     <string name="frog_description">Frog image</string>
+    <string name="error_msg">Erro ao buscar dados</string>
+    <string name="reload">recaregar</string>
 </resources>
