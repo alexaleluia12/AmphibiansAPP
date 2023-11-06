@@ -65,8 +65,11 @@ fun AmphibiansList(uiState: AmphibiansUiState, onRetry: () -> Unit) {
 
 @Composable
 fun LoadingScreen() {
-    // TODO usar img de loading
-    Text("Carreando", style = MaterialTheme.typography.displayLarge)
+    Image(
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = stringResource(R.string.loading_msg),
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 @Composable
@@ -77,7 +80,9 @@ fun ErrorScreen(onRetry: () -> Unit) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(0.9f).padding(16.dp)
+            modifier = Modifier
+                .weight(0.9f)
+                .padding(16.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_broken_image),

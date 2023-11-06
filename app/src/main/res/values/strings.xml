@@ -4,4 +4,5 @@
     <string name="frog_description">Frog image</string>
     <string name="error_msg">Erro ao buscar dados</string>
     <string name="reload">recaregar</string>
+    <string name="loading_msg">Carregando ...</string>
 </resources>
