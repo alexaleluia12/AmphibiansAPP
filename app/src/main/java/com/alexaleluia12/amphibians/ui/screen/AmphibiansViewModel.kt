@@ -1,6 +1,5 @@
 package com.alexaleluia12.amphibians.ui.screen
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,10 +30,10 @@ class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository
                 val amphibians = amphibiansRepository.getAmphibians()
                 AmphibiansUiState.Success(amphibians)
             } catch (e: IOException) {
-                //Log.d(TAG, e.toString()) // TODO(quero logar erro sem ter conflito nos testes)
+                println("tag:$TAG - ${e.message}")
                 AmphibiansUiState.Error
             } catch (e: Exception) {
-                //Log.d(TAG, e.toString())
+                println("tag:$TAG - ${e.message}")
                 AmphibiansUiState.Error
             }
         }
